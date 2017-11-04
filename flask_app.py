@@ -55,14 +55,14 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     flight_search_url = flight_url.format(app_id=app_id,api_key=g_api_key,source=a_source,
     destination=a_destination,dep_date=dep_date,arr_date=arr_date,fclass=f_class.get(fclass),
     adults=adults,children=children,infants=infants,counter=counter_map.get(counter))
-    print(flight_search_url)
+
     flights={}
     jaane_ki_flights=[]
     aane_ki_flights=[]
 
     r = requests.get(flight_search_url)
-    resp = json.loads(r.text)
-    print (resp)
+    resp = r.json()
+
     data_length = resp['data_length']
     if data_length>1:
         aane_ki_flights = resp['data']['returnflights']
@@ -80,13 +80,15 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     flights['jaane_ki_flights'] = jaane_ki_flights
     flights['aane_ki_flights'] = aane_ki_flights
     templates=[]
-    for flight in flights['aane_ki_flights']:
+    print(json.dumps(flights,indent=4))
+    for flight in flights['jaane_ki_flights']:
         temp={
         "title": "{}({})\n Class: {}\n{}({}) -{}({})\nDuration: {}".format(flight["airline"],flight["flightno"],flight["CabinClass"],source,flight["arrtime"],destination,flight["deptime"],flight["duration"]),
-        "subtitle": "Base Price: {}\nTaxes:{}\nTotal Price: {}\n{}".format(flight["PricingSolution"]["BasePrice"],flight["PricingSolution"]["Taxes"],flight["PricingSolution"]["TotalPrice"],flight["warnings"]),
+        "subtitle": "Total Price: {}\n{}".format(flight["fare"]["totalfare"],flight["warnings"]),
         "image_url":flight_image
         }
         templates.append(temp)
+
     result = {
     "data": {
     "type": "carousel",
