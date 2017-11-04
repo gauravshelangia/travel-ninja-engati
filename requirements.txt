@@ -1,1 +1,2 @@
-python-3.6.2
+Flask==0.10
+flask-restful
