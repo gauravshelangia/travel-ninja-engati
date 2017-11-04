@@ -61,8 +61,8 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     aane_ki_flights=[]
 
     r = requests.get(flight_search_url)
-    print(r)
     resp = json.loads(r.text)
+    print (resp)
     data_length = resp['data_length']
     if data_length>1:
         aane_ki_flights = resp['data']['returnflights']
@@ -86,7 +86,7 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
         "subtitle": "Base Price: {}\nTaxes:{}\nTotal Price: {}\n{}".format(flight["PricingSolution"]["BasePrice"],flight["PricingSolution"]["Taxes"],flight["PricingSolution"]["TotalPrice"],flight["warnings"]),
         "image_url":flight_image
         }
-    templates.append(temp)
+        templates.append(temp)
     result = {
     "data": {
     "type": "carousel",
@@ -550,4 +550,3 @@ def get_quiz(category,level):
         option.append({"text":quiz_json[first_rand]['quizes'][second_rand]['quizlist'][third_rand]['option'][1] , "postback":"flow_0D741EC17C654E6DA8E0610DBD002FD8"})
     result = { 'data':{'type':'msg_options',"text":"{}".format(', '.join(quiz_json[first_rand]['quizes'][second_rand]['quizlist'][third_rand]['quiz'])) , "options":option   }}
     return json.dumps(result)
-
