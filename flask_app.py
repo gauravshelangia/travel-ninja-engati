@@ -6,9 +6,9 @@ import utility
 import train_code
 import datetime as dt
 from random import randint
-from flask import Flask
+from flask import Flask,session,request, flash, url_for, redirect, render_template, abort ,g,make_response, jsonify, send_from_directory
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 apikey = 'a6f5i1ae2f'
 api_key = 'AIzaSyA3Yng86scN87Emp5d99Zoyv9V0uwYvPII'
 transit_modes=['bus','train']
@@ -43,6 +43,13 @@ flight_url="""http://developer.goibibo.com/api/search/?app_id={app_id}&app_key={
 
 quiz_json = utility.new_quiz_json()
 stn_code = train_code.train_code()
+
+@app.route('/google_map',methods=['GET'])
+def google_map():
+    if request.method == 'GET':
+        lat = request.args.get('lat')
+        lng = request.args.get('lng')
+        return render_template('user_location_googlemap.html')
 
 @app.route('/flight/<source>/<destination>/<dep_date>')
 def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
@@ -554,4 +561,4 @@ def get_quiz(category,level):
     return json.dumps(result)
 
 if __name__ == "__main__":
-    app.run(host='http://www.travel-ninja-engati.herokuapp.com')
+    app.run(host='localhost')
