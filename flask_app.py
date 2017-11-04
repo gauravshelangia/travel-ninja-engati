@@ -80,7 +80,7 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     flights['jaane_ki_flights'] = jaane_ki_flights
     flights['aane_ki_flights'] = aane_ki_flights
     templates=[]
-    print(json.dumps(flights,indent=4))
+    # print(json.dumps(flights,indent=4))
     for flight in flights['jaane_ki_flights']:
         temp={
         "title": "{}({})\n Class: {}\n{}({}) -{}({})\nDuration: {}".format(flight["airline"],flight["flightno"],flight["CabinClass"],source,flight["arrtime"],destination,flight["deptime"],flight["duration"]),
@@ -410,7 +410,7 @@ def get_restaurant(place):
     hotels = []
     get_place_restaurant_url = base_url_restaurant.format(place=place,apikey=api_key)
     _response = requests.get(get_place_restaurant_url)
-    print(get_place_restaurant_url)
+    # print(get_place_restaurant_url)
     _response = _response.json()
     if (_response['status'] == "OK"):
         results = _response['results']
@@ -457,7 +457,7 @@ def get_ATM(place):
     ATMS = []
     get_place_ATM_url = base_url_ATM.format(place=place,apikey=api_key)
     _response = requests.get(get_place_ATM_url)
-    print(get_place_ATM_url)
+    # print(get_place_ATM_url)
     _response = _response.json()
     if (_response['status'] == "OK"):
         results = _response['results']
