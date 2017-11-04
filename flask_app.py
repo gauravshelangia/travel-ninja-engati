@@ -554,4 +554,4 @@ def get_quiz(category,level):
     return json.dumps(result)
 
 if __name__ == "__main__":
-    app.run(host='localhost')
+    app.run(host='http://www.travel-ninja-engati.herokuapp.com')
