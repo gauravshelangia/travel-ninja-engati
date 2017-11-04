@@ -1,1 +1,1 @@
-flask run --log-file=-
+python flask_app.py

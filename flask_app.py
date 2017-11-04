@@ -552,3 +552,6 @@ def get_quiz(category,level):
         option.append({"text":quiz_json[first_rand]['quizes'][second_rand]['quizlist'][third_rand]['option'][1] , "postback":"flow_0D741EC17C654E6DA8E0610DBD002FD8"})
     result = { 'data':{'type':'msg_options',"text":"{}".format(', '.join(quiz_json[first_rand]['quizes'][second_rand]['quizlist'][third_rand]['quiz'])) , "options":option   }}
     return json.dumps(result)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
