@@ -201,6 +201,7 @@ def get_topinsights(place):
                     topinsight['rating'] = '0'
                 topinsights.append(topinsight)
             except KeyError:
+                topinsight['rating'] = '0'
                 topinsights.append(topinsight)
                 continue
     else:
