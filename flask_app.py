@@ -147,8 +147,8 @@ def find_bus(source,destination,dep_date,arr_date=""):
         # print(json.dumps(flights,indent=4))
         for bus in buses['jaane_ki_buses']:
             temp={
-            "title": "{}({})\n {}({}) -{}({})\nDuration: {}".format(bus["TravelsName"],bus["BusType"],bus["origin"],bus["ArrivalTime"],bus["destination"],bus["DepartureTime"],bus["duration"]),
-            "subtitle": "Total Price: {}\n Rating: {}".format(bus["fare"]["totalfare"], bus["rating"]),
+            "title": "{}({})\nDuration: {}".format(bus["TravelsName"],bus["BusType"],bus["duration"]),
+            "subtitle": "Total Price: {}\n {}({}) -{}({})\n Rating: {}".format(bus["fare"]["totalfare"],bus["origin"],bus["ArrivalTime"],bus["destination"],bus["DepartureTime"],bus["rating"]),
             "image_url":flight_image
             }
             templates.append(temp)
