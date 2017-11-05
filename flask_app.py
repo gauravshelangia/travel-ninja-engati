@@ -169,7 +169,70 @@ def find_bus(source,destination,dep_date,arr_date=""):
 
     return result
 
+@app.route('/tourist_place/<place>')
+def get_topinsights(place):
+    topinsight_url = """https://maps.googleapis.com/maps/api/place/textsearch/json?query=topsights in {place}&key={apikey}"""
+    topinsight_search_url = topinsight_url.format(place=place,apikey=api_key)
+    topinsights = []
+    topinsights_sorted=[]
+    response = requests.get(topinsight_search_url)
+    response = response.json()
+    if response['status'] == "OK":
+        results = response['results']
+        for result in results:
+            topinsight = {}
+            try:
+                topinsight['name'] = result['name']
+                topinsight['address'] = result['formatted_address']
+                topinsight['lat'] = result['geometry']['location']['lat']
+                topinsight['lng'] = result['geometry']['location']['lng']
 
+                get_place_detail_url = base_url_place_details.format(placeid=result['place_id'],apikey=api_key)
+                response_place_detail = requests.get(get_place_detail_url)
+                response_place_detail = response_place_detail.json()
+                #print(response_place_detail)
+                if(response_place_detail['status']=="OK"):
+                    photoreference = response_place_detail['result']['photos'][0]['photo_reference']
+                    topinsight['image']=base_url_place_photo.format(photoreference=photoreference,apikey=api_key)
+
+                topinsight['rating'] = result['rating']
+                topinsights.append(topinsight)
+            except KeyError:
+                topinsights.append(topinsight)
+                continue
+    else:
+        msg="Something went wrong! Please Try Again Later"
+        result = { 'data':{'type':'text', 'text':"{}".format(msg) }}
+        return json.dumps(result)
+
+    topinsights_sorted = sorted(topinsights, key=lambda x : float(x['rating']),reverse=True)
+    templates=[]
+    for item in topinsights_sorted:
+        image="https://www.bluelankatours.com/wp-content/uploads/2017/01/Sri_Lanka_Public_Holidays_2017.jpg"
+        if 'image' in item:
+            image=item['image']
+        temp={
+        "title": "Name: {}\n Rating: {} ".format(item['name'],item  ['rating']),
+        "subtitle": "Address: {}".format(item['address']),
+        "image_url":image,
+        "buttons": [
+            {
+            "payload": "https://travel-ninja-engati.herokuapp.com/google_map?lat={}&lng={}".format(item['lat'],item['lng']),
+            "title": "Find Directions",
+            "type": "web_url"
+            }
+            ]
+        }
+        templates.append(temp)
+    if len(templates)>10:
+        templates=templates[:10]
+    result = {
+    "data": {
+    "type": "carousel",
+    "templates": templates
+    }
+    }
+    return json.dumps(result)
 
 @app.route('/')
 def hello_world():
