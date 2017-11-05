@@ -195,7 +195,10 @@ def get_topinsights(place):
                     photoreference = response_place_detail['result']['photos'][0]['photo_reference']
                     topinsight['image']=base_url_place_photo.format(photoreference=photoreference,apikey=api_key)
 
-                topinsight['rating'] = result['rating']
+                if 'rating' in result:
+                    topinsight['rating'] = result['rating']
+                else:
+                    topinsight['rating'] = '0'
                 topinsights.append(topinsight)
             except KeyError:
                 topinsights.append(topinsight)
