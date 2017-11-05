@@ -90,7 +90,7 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     # print(json.dumps(flights,indent=4))
     for flight in flights['jaane_ki_flights']:
         temp={
-        "title": "{}({})\n Class: {}\n{}({}) -{}({})\nDuration: {}".format(flight["airline"],flight["flightno"],flight["CabinClass"],source,flight["arrtime"],destination,flight["deptime"],flight["duration"]),
+        "title": "{}({})\n Class:{} \n {}({}) -{}({})\nDuration: {}".format(flight["airline"],flight["flightno"],flight["seatingclass"],source,flight["arrtime"],destination,flight["deptime"],flight["duration"]),
         "subtitle": "Total Price: {}\n{}".format(flight["fare"]["totalfare"],flight["warnings"]),
         "image_url":flight_image
         }
