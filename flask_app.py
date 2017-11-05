@@ -83,6 +83,10 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
 
     jaane_ki_flights = sorted(jaane_ki_flights, key= lambda k: int(k['fare']['totalfare']))
     aane_ki_flights = sorted(aane_ki_flights, key= lambda k: int(k['fare']['totalfare']))
+    if len(jaane_ki_flights)>10:
+        jaane_ki_flights=jaane_ki_flights[:10]
+    if len(aane_ki_flights)>10:
+        aane_ki_flights=aane_ki_flights[:10]        
 
     flights['jaane_ki_flights'] = jaane_ki_flights
     flights['aane_ki_flights'] = aane_ki_flights
@@ -103,6 +107,68 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     }
     }
     return json.dumps(result)
+
+
+bus_url = """https://developer.goibibo.com/api/bus/search/?app_id={app_id}&app_key={api_key}&format=json&source={source}&destination={destination}&dateofdeparture={dep_date}&dateofarrival={arr_date}"""
+
+@app.route('/bus/<source>/<destination>/<dep_date>')
+def find_bus(source,destination,dep_date,arr_date=""):
+    bus_search_url=bus_url.format(app_id=app_id,api_key=g_api_key,source=source,
+    destination=destination,dep_date=dep_date,arr_date=arr_date)
+    #print(bus_search_url)
+    buses={}
+    jaane_ki_buses=[]
+    aane_ki_buses=[]
+    try:
+        response = requests.get(bus_search_url)
+        response = response.json()
+        aane_ki_buses = response['data']['returnflights']
+        jaane_ki_buses = response['data']['onwardflights']
+
+        try :
+            jaane_ki_buses = sorted(jaane_ki_buses, key= lambda k: int(k['fare']['totalfare']))
+            if len(jaane_ki_buses)>10:
+                jaane_ki_buses=jaane_ki_buses[:10]
+        except KeyError:
+            msg="Bus not found"
+            result = { 'data':{'type':'text', 'text':"{}".format(msg) }}
+            return json.dumps(result)
+
+        try:
+            aane_ki_buses = sorted(aane_ki_buses, key= lambda k: int(k['fare']['totalfare']))
+            if len(aane_ki_buses)>10:
+                aane_ki_buses=aane_ki_buses[:10]
+        except KeyError:
+            print ("empty buses aane ki buses")
+
+        buses['jaane_ki_buses'] = jaane_ki_buses
+        buses['aane_ki_buses'] = aane_ki_buses
+        templates=[]
+        # print(json.dumps(flights,indent=4))
+        for bus in buses['jaane_ki_buses']:
+            temp={
+            "title": "{}({})\n {}({}) -{}({})\nDuration: {}".format(bus["TravelsName"],bus["BusType"],bus["origin"],bus["ArrivalTime"],bus["destination"],bus["DepartureTime"],bus["duration"]),
+            "subtitle": "Total Price: {}\n Rating: {}".format(bus["fare"]["totalfare"], bus["rating"]),
+            "image_url":flight_image
+            }
+            templates.append(temp)
+
+        result = {
+        "data": {
+        "type": "carousel",
+        "templates": templates
+        }
+        }
+        return json.dumps(result)
+    except:
+        buses['jaane_ki_buses'] = jaane_ki_buses
+        buses['aane_ki_buses'] = aane_ki_buses
+        msg="Bus not found"
+        result = { 'data':{'type':'text', 'text':"{}".format(msg) }}
+        return json.dumps(result)
+
+    return result
+
 
 
 @app.route('/')
