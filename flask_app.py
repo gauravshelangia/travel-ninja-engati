@@ -91,7 +91,7 @@ def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     for flight in flights['jaane_ki_flights']:
         temp={
         "title": "{}({})\n Class:{} \n {}({}) -{}({})\nDuration: {}".format(flight["airline"],flight["flightno"],flight["seatingclass"],source,flight["arrtime"],destination,flight["deptime"],flight["duration"]),
-        "subtitle": "Total Price: {}\n{}".format(flight["fare"]["totalfare"],flight["warnings"]),
+        "subtitle": "Total Price: {}\nStop: {}\n{}".format(flight["fare"]["totalfare"],flight["stops"],flight["warnings"]),
         "image_url":flight_image
         }
         templates.append(temp)
