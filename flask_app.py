@@ -10,7 +10,7 @@ from flask import Flask,session,request, flash, url_for, redirect, render_templa
 
 app = Flask(__name__, template_folder='templates')
 apikey = 'a6f5i1ae2f'
-api_key = 'AIzaSyDadn2aDmE23s7wvuuLgkBHS6_cLNM9YPE'
+api_key = 'AIzaSyB1sVfpJNP2MRAi59KxgLZnUTAlOEANWd8'
 transit_modes=['bus','train']
 base_url_bus="https://maps.googleapis.com/maps/api/directions/json?&mode=transit&transit_mode={transit_mode}&alternatives=true&origin={origin}&destination={destination}&departure_time={departure_time}&key={apikey}"
 base_url_hotels="https://maps.googleapis.com/maps/api/place/textsearch/json?query={place}+india+hotel+accommodation+hospitality&key={apikey}"
