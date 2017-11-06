@@ -10,7 +10,7 @@ from flask import Flask,session,request, flash, url_for, redirect, render_templa
 
 app = Flask(__name__, template_folder='templates')
 apikey = 'a6f5i1ae2f'
-api_key = 'AIzaSyA3Yng86scN87Emp5d99Zoyv9V0uwYvPII'
+api_key = 'AIzaSyDadn2aDmE23s7wvuuLgkBHS6_cLNM9YPE'
 transit_modes=['bus','train']
 base_url_bus="https://maps.googleapis.com/maps/api/directions/json?&mode=transit&transit_mode={transit_mode}&alternatives=true&origin={origin}&destination={destination}&departure_time={departure_time}&key={apikey}"
 base_url_hotels="https://maps.googleapis.com/maps/api/place/textsearch/json?query={place}+india+hotel+accommodation+hospitality&key={apikey}"
@@ -146,10 +146,21 @@ def find_bus(source,destination,dep_date,arr_date=""):
         templates=[]
         # print(json.dumps(flights,indent=4))
         for bus in buses['jaane_ki_buses']:
+            phone_number = bus['BPPrims']['list'][0]['BPContactNumber']
+            phone_numbers = phone_number.split(sep=',')
+            phone_number= phone_number[0]
+            print(phone_number)
             temp={
             "title": "{}({})\nDuration: {}".format(bus["TravelsName"],bus["BusType"],bus["duration"]),
             "subtitle": "Total Price: {}\n {}({}) -{}({})\n Rating: {}".format(bus["fare"]["totalfare"],bus["origin"],bus["ArrivalTime"],bus["destination"],bus["DepartureTime"],bus["rating"]),
-            "image_url":flight_image
+            "image_url":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeHBNxXAPZf3jpn7C7gxmAqhl_5u7wii0DPd_qAsT5ITXIEHjp",
+            "buttons": [
+            {
+            "payload": phone_number,
+            "title": "\U0001F4DE Call",
+            "type": "phone_number"
+            }
+            ]
             }
             templates.append(temp)
 
