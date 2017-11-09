@@ -133,6 +133,11 @@ def find_bus(source,destination,dep_date,arr_date=""):
             jaane_ki_buses = sorted(jaane_ki_buses, key= lambda k: int(k['fare']['totalfare']))
             if len(jaane_ki_buses)>10:
                 jaane_ki_buses=jaane_ki_buses[:10]
+            elif len(jaane_ki_buses)==0:
+                msg="No Bus found. Try some other route"
+                result = { 'data':{'type':'text', 'text':"{}".format(msg) }}
+                return json.dumps(result)
+                    
         except KeyError:
             msg="Bus not found"
             result = { 'data':{'type':'text', 'text':"{}".format(msg) }}
