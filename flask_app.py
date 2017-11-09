@@ -54,6 +54,8 @@ def google_map():
 @app.route('/flight/<source>/<destination>/<dep_date>')
 def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     adults=1,children=0,infants=0,counter="Domestic"):
+    source=source.lower()
+    destination=destination.lower()
     a_source = city_names_codes.get(source)
     a_destination = city_names_codes.get(destination)
     if len(source)==0 or len(destination)==0:
@@ -113,6 +115,8 @@ bus_url = """https://developer.goibibo.com/api/bus/search/?app_id={app_id}&app_k
 
 @app.route('/bus/<source>/<destination>/<dep_date>')
 def find_bus(source,destination,dep_date,arr_date=""):
+    source=source.lower()
+    destination=destination.lower()
     bus_search_url=bus_url.format(app_id=app_id,api_key=g_api_key,source=source,
     destination=destination,dep_date=dep_date,arr_date=arr_date)
     #print(bus_search_url)
@@ -182,6 +186,7 @@ def find_bus(source,destination,dep_date,arr_date=""):
 
 @app.route('/tourist_place/<place>')
 def get_topinsights(place):
+    place=place.lower()
     topinsight_url = """https://maps.googleapis.com/maps/api/place/textsearch/json?query=topsights in {place}&key={apikey}"""
     topinsight_search_url = topinsight_url.format(place=place,apikey=api_key)
     topinsights = []
