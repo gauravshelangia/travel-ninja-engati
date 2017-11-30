@@ -51,6 +51,11 @@ def google_map():
         lng = request.args.get('lng')
         return render_template('user_location_googlemap.html')
 
+@app.route('/fizobot',methods=['GET'])
+def fizobot():
+    if request.method == 'GET':
+        return render_template('test.html')        
+
 @app.route('/flight/<source>/<destination>/<dep_date>')
 def find_flights(source,destination,dep_date,arr_date="",fclass="economy",
     adults=1,children=0,infants=0,counter="Domestic"):
